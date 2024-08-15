@@ -1,59 +1,69 @@
 <template>
-  <form>
-    <!-- ------------------------inputs------------------------------- -->
-    <label for="email">email</label>
-    <input type="email" required v-model="email" />
-    <label for="password">password</label>
-    <input type="password" required v-model="password" />
-    <!---------------------------- option----------------------------- -->
-    <select v-model="role">
-      <option value="developer">web developer</option>
-      <option value="designer">web designer</option>
-    </select>
-    <!-- --------------------------skills------------------------------  -->
-    <label>skills : </label>
-    <input type="text" v-model="tempskills" @keyup.alt="addskill" />
+  <div>
+    <form @submit.prevent="handleSubmit">
+      <!-- ------------------------inputs------------------------------- -->
+      <label for="email">email</label>
+      <input type="email" required v-model="email" />
+      <label for="password">password</label>
+      <input type="password" required v-model="password" />
+      <p class="err" v-if="passwordEror">{{ passwordEror }}</p>
+      <!---------------------------- option----------------------------- -->
+      <select v-model="role">
+        <option value="developer">web developer</option>
+        <option value="designer">web designer</option>
+      </select>
+      <!-- --------------------------skills------------------------------  -->
+      <label>skills : </label>
+      <input type="text" v-model="tempskills" @keyup.alt="addskill" />
 
-    <div class="pill" v-for="skill in skills" :key="skill">
-      <span @click="removeskill(skill)">{{ skill }}</span>
+      <div class="pill" v-for="skill in skills" :key="skill">
+        <span @click="removeskill(skill)">{{ skill }}</span>
+      </div>
+      <!-- ---------------------checkbox------------------------------------ -->
+      <div class="terms">
+        <input type="checkbox" v-model="terms" required />
+        <label>Accept trm & conditions </label>
+      </div>
+      <div class="terms">
+        <input type="checkbox" v-model="names" value="minoo" required />
+        <label>minoo</label>
+      </div>
+      <div class="terms">
+        <input type="checkbox" v-model="names" value="amirmehdi" required />
+        <label>amirmehdi </label>
+      </div>
+      <div class="terms">
+        <input type="checkbox" v-model="names" value="kurosh" required />
+        <label>kurosh </label>
+      </div>
+
+      <div class="submit">
+        <button>create an account</button>
+      </div>
+    </form>
+    <div class="result">
+      <p>email : {{ email }}</p>
+      <p>password : {{ password }}</p>
+      <p>role : {{ role }}</p>
+      <p>terms :{{ terms }}</p>
+      <p>names: {{ names }}</p>
+      <p>skills : {{ skills }}</p>
     </div>
-    <!-- ---------------------checkbox------------------------------------ -->
-    <div class="terms">
-      <input type="checkbox" v-model="terms" required />
-      <label>Accept trm & conditions </label>
-    </div>
-    <div class="terms">
-      <input type="checkbox" v-model="names" value="minoo" required />
-      <label>minoo</label>
-    </div>
-    <div class="terms">
-      <input type="checkbox" v-model="names" value="amirmehdi" required />
-      <label>amirmehdi </label>
-    </div>
-    <div class="terms">
-      <input type="checkbox" v-model="names" value="kurosh" required />
-      <label>kurosh </label>
-    </div>
-  </form>
-  <p>email : {{ email }}</p>
-  <p>password : {{ password }}</p>
-  <p>role : {{ role }}</p>
-  <p>terms :{{ terms }}</p>
-  <p>names: {{ names }}</p>
-  <p>skills : {{ skills }}</p>
+  </div>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      email: "minoo",
-      password: "minoo",
+      email: "",
+      password: "",
       role: "",
       terms: false,
       names: [],
       tempskills: "",
       skills: [],
+      passwordEror: "",
     };
   },
   methods: {
@@ -69,6 +79,14 @@ export default {
       this.skills = this.skills.filter((item) => {
         return skill != item;
       });
+    },
+    handleSubmit() {
+      // console.log("form submit")
+      if (this.password.length > 5) {
+        this.passwordEror = "";
+      } else {
+        this.passwordEror = "password is not than more than 5 chars";
+      }
     },
   },
 };
@@ -122,5 +140,22 @@ input[type="checkbox"] {
   font-weight: bold;
   color: #777;
   cursor: pointer;
+}
+button {
+  background: rgb(22, 253, 176);
+  border: 0;
+  padding: 10px 20px;
+  margin-top: 20px;
+  color: rgb(63, 63, 63);
+  border-radius: 20px;
+}
+.submit {
+  text-align: center;
+}
+.err {
+  color: red;
+  margin-top: 10px;
+  font-size: 0.8rem;
+  font-weight: bold;
 }
 </style>
